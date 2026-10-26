@@ -1,0 +1,12 @@
+﻿@page
+@model WebApplication1.Pages.Index1Model
+@{
+}
+
+<div class="text-center">
+    <h1 class="mb-3">Main page 2</h1>
+    <a asp-page="./ReturnToCaller"
+       asp-route-returnUrl="@($"{Request.Path}{Request.QueryString}")"
+       class="btn btn-primary"
+       title="Edit">Go to ReturnToCaller page</a>
+</div>
