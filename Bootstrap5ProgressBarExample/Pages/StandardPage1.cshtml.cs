@@ -9,21 +9,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 public class StandardPage1Model : PageModel
 {
     public int Progress { get; private set; }
+    private const string CookieName = "ProgressStart";
 
-    public void OnGet()
+    public void OnGet(bool refresh = false)
     {
-        const string cookieName = "ProgressStart";
-
-        if (!Request.Cookies.TryGetValue(cookieName, out var startValue) ||
-            !DateTimeOffset.TryParse(startValue, out var startTime))
+        if (!refresh || !Request.Cookies.TryGetValue(CookieName, out var value) ||
+            !DateTimeOffset.TryParse(value, out var startTime))
         {
             startTime = DateTimeOffset.UtcNow;
 
-            Response.Cookies.Append(cookieName, startTime.ToString("O"),
+            Response.Cookies.Delete(CookieName);
+
+            Response.Cookies.Append(CookieName, startTime.ToString("O"),
                 new CookieOptions
                 {
                     HttpOnly = true,
-                    SameSite = SameSiteMode.Lax
+                    SameSite = SameSiteMode.Lax,
+                    IsEssential = true
                 });
         }
 
@@ -33,11 +35,11 @@ public class StandardPage1Model : PageModel
 
         if (Progress < 100)
         {
-            Response.Headers["Refresh"] = "10";
+            Response.Headers["Refresh"] = "10;url=/StandardPage1?refresh=true";
         }
         else
         {
-            Response.Cookies.Delete(cookieName);
+            Response.Cookies.Delete(CookieName);
         }
     }
 }
