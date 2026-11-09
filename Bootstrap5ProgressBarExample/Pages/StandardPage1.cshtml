@@ -1,0 +1,33 @@
+﻿@page
+@model Bootstrap5ProgressBarExample.Pages.StandardPage1Model
+@{
+    ViewData["Title"] = "Progress Example";
+}
+
+<div class="container mt-5">
+
+    <h3>Processing Progress</h3>
+
+    <div class="progress mt-4"
+         role="progressbar"
+         aria-label="Processing progress"
+         aria-valuenow="@Model.Progress"
+         aria-valuemin="0"
+         aria-valuemax="100"
+         style="height: 30px;">
+
+        <div class="progress-bar progress-bar-striped progress-bar-animated"
+             style="width: @(Model.Progress)%">
+            @Model.Progress%
+        </div>
+
+    </div>
+
+    @if (Model.Progress == 100)
+    {
+        <div class="alert alert-success mt-3">
+            Processing completed successfully.
+        </div>
+    }
+
+</div>

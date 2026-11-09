@@ -1,0 +1,100 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<script src="js/appProgressbar.js"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <div class="card shadow rounded-1">
+                <div class="card-body bg-primary text-white bg-opacity-75">
+                    <h1 class="fs-6">Progress bar</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row mt-2">
+        <div class="col-8">
+            <div class="progress mt-2 w-75 bg-info bg-opacity-50" style="height: 19px;" id="progressStatus">
+
+                <div class="progress-bar" id="progressbar1"
+                     role="progressbar"
+                     style="width: 0%; height: 18px;"
+                     aria-valuenow="0"
+                     aria-valuemin="0"
+                     aria-valuemax="100">
+                    0%
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div>
+            <kbd>CTRL</kbd> + <kbd>1</kbd> Increment
+        </div>
+        <div>
+            <kbd>CTRL</kbd> + <kbd>2</kbd> Decrement
+        </div>
+        <div>
+            <kbd>CTRL</kbd> + <kbd>3</kbd> reset
+        </div>
+    </div>
+
+</div>
+
+
+@section scripts{
+    <script>
+
+        function IncrementProgressbar() {
+            var current = $appProgressbar.CurrentValue("#progressbar1");
+            $appProgressbar.Increment("#progressbar1", current + 10);
+        }
+
+        function DecrementProgressbar() {
+            var current = parseInt($appProgressbar.CurrentValue("#progressbar1"));
+            
+            if (current >= 10) {
+                $appProgressbar.Increment("#progressbar1", current - 10);    
+            }
+            
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            $appProgressbar.init('#progressStatus');
+            $appProgressbar.init($("en").val());
+            $appProgressbar.Increment("#progressbar1", 0);
+            $appProgressbar.Show('#progressStatus');
+        });
+
+        /*
+         * For interacting with progressbar without buttons
+         */
+        $(this).on('keydown', function (event) {
+
+            // increment progressbar
+            if (event.key === '1' && event.ctrlKey) {
+                IncrementProgressbar();
+            }
+
+            if (event.key === '2' && event.ctrlKey) {
+                DecrementProgressbar();
+            }
+
+            // reset progressbar with retracting to 0
+            if (event.key === '3' && event.ctrlKey) {
+                $appProgressbar.reset('progressbar1');
+            }
+
+        });
+
+
+    </script>
+}
